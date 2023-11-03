@@ -1,0 +1,7 @@
+sentencepiece==0.1.99
+transformers==4.30.0
+tqdm
+torch
+numpy
+pandas
+nltk
