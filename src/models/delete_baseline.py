@@ -1,6 +1,8 @@
 import re
 import nltk
 from nltk.tokenize.treebank import TreebankWordDetokenizer
+import argparse
+
 
 
 def tokenize_sentence(sentence):
@@ -33,9 +35,23 @@ def delete_baseline(input_file, bad_words_file, output_file):
 
     print("Non-toxic sentences have been written to the output file.")
 
-def main():
+def main(args):
+
+    save_path1 = args.save_path1
+    save_path2 = args.save_path2
+    save_path3 = args.save_path3
+    
     #create output file
-    delete_baseline('data/interim/reference.txt', 'data/interim/bad_words.txt', 'data/interim/baseline.txt')
+    delete_baseline(save_path1, save_path2, save_path3)
 
 if __name__ == "__main__":
-    main()
+    
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--save_path1", help="save path to reference.txt", default="data/interim/reference.txt")
+    parser.add_argument("--save_path2", help="save path to bad_words.txt", default='data/interim/bad_words.txt')
+    parser.add_argument("--save_path3", help="save path to baseline.txt", default='data/interim/baseline.txt')
+
+    args = parser.parse_args()
+
+
+    main(args)

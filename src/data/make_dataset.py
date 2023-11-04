@@ -2,6 +2,7 @@ import requests
 import zipfile
 import io
 import pandas as pd
+import argparse
 
 
 
@@ -34,29 +35,42 @@ def preprocess(df):
 
 
 
-def main():
+def main(args):
+    save_path1 = args.save_path1
+    save_path2 = args.save_path2
+    save_path3 = args.save_path3
+
+
+
     url1 = "https://github.com/skoltech-nlp/detox/releases/download/emnlp2021/filtered_paranmt.zip"
-    save_path1 = "data/raw"
-    # download_dataset(url1, save_path1)
-    df = pd.read_csv("data/raw/filtered.tsv", sep="\t", index_col=0)
+    download_dataset(url1, save_path1)
+
+    df = pd.read_csv(save_path1 + "filtered.tsv", sep="\t", index_col=0)
     df = preprocess(df)
 
-    # save df to ../data/interim
-    df.to_csv("data/interim/filtered.csv")
+    # save preprocesed df to save_path3 + "filtered.csv"
+    df.to_csv(save_path3 + "filtered.csv", index=False)
 
     #save df['reference'] as txt file
-    df['reference'].to_csv("data/interim/reference.txt", index=False, header=False)
-    df['translation'].to_csv("data/interim/translation.txt", index=False, header=False)
+    df['reference'].to_csv(save_path3 + "reference.txt", index=False, header=False)
+    df['translation'].to_csv(save_path3 + "translation.txt", index=False, header=False)
 
  
 
 
 
     url2 = "https://www.kaggle.com/datasets/nicapotato/bad-bad-words/download?datasetVersionNumber=1"
-    save_path2 = "data/external"
-    # download_dataset(url2, save_path2)
-    txt = pd.read_csv("data/external/bad-words.csv")
-    txt.to_csv("data/interim/bad_words.txt", index=False, header=False)
-    
+    download_dataset(url2, save_path2)
+    txt = pd.read_csv(save_path2 + "bad-words.csv")
+    txt.to_csv(save_path3 + "bad_words.txt", index=False, header=False)
+
 if __name__ == "__main__":  
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--save_path1", help="save path to filtered_paranmt.zip", default="data/raw/")
+    parser.add_argument("--save_path2", help="save path to bad-words.csv", default='data/external/')
+    parser.add_argument("--save_path3", help="save path to interim", default='data/interim/')
+
+    args = parser.parse_args()
+
+
+    main(args)
