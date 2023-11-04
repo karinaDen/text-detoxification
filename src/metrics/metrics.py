@@ -31,7 +31,7 @@ def classify_preds(args, preds, soft=False):
     model_name = args.classifier_path or 'SkolkovoInstitute/roberta_toxicity_classifier'
 
     tokenizer = RobertaTokenizer.from_pretrained(model_name)
-    model = RobertaForSequenceClassification.from_pretrained(model_name)
+    model = RobertaForSequenceClassification.from_pretrained(model_name).to(device)
 
     for i in tqdm.tqdm(range(0, len(preds), args.batch_size)):
         batch = tokenizer(preds[i:i + args.batch_size], return_tensors='pt', padding=True)

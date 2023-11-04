@@ -15,8 +15,8 @@ import sentencepiece as spm
 class SimilarityEvaluator:
     def __init__(
         self,
-        model_path='sim.pt',
-        tokenizer_path='sim.sp.30k.model',
+        model_path='text-detoxification/src/metrics/wieting_similarity/sim.pt',
+        tokenizer_path='text-detoxification/src/metrics/wieting_similarity/sim.sp.30k.model',
         gpu=False
     ):
         self.model_path = model_path
