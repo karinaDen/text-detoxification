@@ -11,7 +11,7 @@ __pycache__/
 *.model
 
 *.tsv
-*/filtered.csv
+data/interim/filtered.csv
 
 # Distribution / packaging
 .Python
