@@ -14,6 +14,13 @@ tokenizer = AutoTokenizer.from_pretrained('t5-small')
 
 
 def compute_metrics(eval_preds):
+    """
+    Computes the metrics for the given predictions.
+    Args:
+    - eval_preds: The predictions made by the model.
+    Returns:
+    - A dictionary containing the computed metrics.
+    """
     metric = load_metric("sacrebleu")
 
 
@@ -41,6 +48,12 @@ def compute_metrics(eval_preds):
 
 
 def train(args, model):
+    """
+    Trains the model.
+    Args:
+    - args: The arguments passed to the script.
+    - model: The model to train.
+    """
     epochs = args.epochs
 
     # Prefix for model input

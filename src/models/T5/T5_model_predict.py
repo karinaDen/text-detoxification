@@ -9,6 +9,13 @@ warnings.filterwarnings('ignore')
 
 
 def load_model(model_path):
+    """
+    Loads the model from the specified path.
+    Args:
+    - model_path: The path to the model.
+    Returns:
+    - The loaded model.
+    """
 
     model = AutoModelForSeq2SeqLM.from_pretrained(model_path)
 
@@ -18,6 +25,15 @@ def load_model(model_path):
     return model
 
 def detoxificate(model, tokenizer, text):
+    """
+    Detoxificates the given text.
+    Args:
+    - model: The model to use for detoxification.
+    - tokenizer: The tokenizer to use for detoxification.
+    - text: The text to detoxificate.
+    Returns:
+    - The detoxificated text.
+    """
     prefix="paraphrase:"
     input = prefix + text
     input_ids = tokenizer(input, return_tensors="pt").input_ids
@@ -26,7 +42,15 @@ def detoxificate(model, tokenizer, text):
     
 
 def predict(model, tokenizer, test_df_path):
-
+    """
+    Predicts the paraphrases for the given test data.
+    Args:
+    - model: The model to use for prediction.
+    - tokenizer: The tokenizer to use for prediction.
+    - test_df_path: The path to the test data.
+    Returns:
+    - A list of predicted paraphrases.
+    """
 
     with open(test_df_path, 'r') as f:
         test_df = f.readlines()
