@@ -19,20 +19,24 @@ def load_model(model_path):
 
 def detoxificate(model, tokenizer, text):
     prefix="paraphrase:"
-    input_ids = tokenizer(prefix + text, return_tensors="pt").input_ids
+    input = prefix + text
+    input_ids = tokenizer(input, return_tensors="pt").input_ids
     outputs = model.generate(input_ids=input_ids,  num_beams=4, )
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
     
 
 def predict(model, tokenizer, test_df_path):
-    test_df = pd.read_csv(test_df_path, sep="\t", index_col=0)
+
+
+    with open(test_df_path, 'r') as f:
+        test_df = f.readlines()
 
     result = []
-    for text in tqdm(test_df.iterrows(), total=test_df.shape[0], ):
+    for text in tqdm(test_df):
         result.append(detoxificate(model, tokenizer, text))
 
     # save result to txt file   
-    with open("result.txt", "w") as f:
+    with open("../data/interim/result.txt", "w") as f:
         for text in result:
             f.write(text + "\n")
 
