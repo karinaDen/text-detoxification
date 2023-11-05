@@ -3,6 +3,8 @@ import zipfile
 import io
 import pandas as pd
 import argparse
+from sklearn.model_selection import train_test_split
+
 
 
 
@@ -55,6 +57,22 @@ def preprocess(df):
 
 
 
+def split_dataset(df):
+    """
+    Split the given DataFrame into train, validation, and test sets.
+    Args:
+    - df: pandas DataFrame containing columns 'reference', 'translation', 'ref_tox', and 'trn_tox'
+    Returns:
+    - train, validation, and test sets
+    """
+
+    # split df into train and test sets
+    train_df, test_df = train_test_split(df, test_size=0.2, random_state=42)
+
+    # split train_df into train and validation sets
+    train_df, val_df = train_test_split(train_df, test_size=0.2, random_state=42)
+
+    return train_df, val_df, test_df
 
 
 def main(args):
@@ -81,10 +99,19 @@ def main(args):
     txt = pd.read_csv(save_path2 + "bad-words.csv")
     txt.to_csv(save_path3 + "bad_words.txt", index=False, header=False)
 
+
+    # split df into train, validation, and test sets
+    train_df, val_df, test_df = split_dataset(df)
+
+    # save train, validation, and test sets to save_path3
+    train_df.to_csv(save_path3 + "train.csv", index=False)
+    val_df.to_csv(save_path3 + "validation.csv", index=False)
+    test_df.to_csv(save_path3 + "test.csv", index=False)
+
 if __name__ == "__main__":  
     parser = argparse.ArgumentParser()
-    parser.add_argument("--save_path1", help="save path to filtered_paranmt.zip", default="data/raw/")
-    parser.add_argument("--save_path2", help="save path to bad-words.csv", default='data/external/')
+    parser.add_argument("--save_path1", help="save path to raw dataset", default="data/raw/")
+    parser.add_argument("--save_path2", help="save path to external datasets", default='data/external/')
     parser.add_argument("--save_path3", help="save path to interim", default='data/interim/')
 
     args = parser.parse_args()
