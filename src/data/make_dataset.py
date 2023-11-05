@@ -108,6 +108,10 @@ def main(args):
     val_df.to_csv(save_path3 + "validation.csv", index=False)
     test_df.to_csv(save_path3 + "test.csv", index=False)
 
+    test_df['reference'].to_csv(save_path3 + "test_reference.txt", index=False, header=False)
+    test_df['translation'].to_csv(save_path3 + "test_translation.txt", index=False, header=False)
+
+
 if __name__ == "__main__":  
     parser = argparse.ArgumentParser()
     parser.add_argument("--save_path1", help="save path to raw dataset", default="data/raw/")
