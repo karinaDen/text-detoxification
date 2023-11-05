@@ -10,10 +10,10 @@ import pandas as pd
 import warnings 
 warnings.filterwarnings('ignore')
 
+tokenizer = AutoTokenizer.from_pretrained('t5-small')
 
 
-
-def compute_metrics(eval_preds, tokenizer, model):
+def compute_metrics(eval_preds):
     metric = load_metric("sacrebleu")
 
 
@@ -40,7 +40,7 @@ def compute_metrics(eval_preds, tokenizer, model):
 
 
 
-def train(args, tokenizer, model):
+def train(args, model):
     epochs = args.epochs
 
     # Prefix for model input
@@ -101,18 +101,17 @@ def train(args, tokenizer, model):
 
 
 def main(args):
-    tokenizer = AutoTokenizer.from_pretrained('t5-small')
     model = AutoModelForSeq2SeqLM.from_pretrained('t5-small')
 
 
-    train(args, tokenizer, model)
+    train(args, model)
 
 
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--train_path", help="path to train dataet", default="../data/interim/")
-    parser.add_argument("--output_path", help="path to save model", default="../models/T5/")
+    parser.add_argument("--output_path", help="path to save model", default="..src/models/T5/")
     parser.add_argument("--epochs", help="number of epochs", default=10)
     parser.add_argument("--batch_size", help="batch size", default=32)
     args = parser.parse_args()
